@@ -4,12 +4,36 @@
 PlayLevel::PlayLevel():
 	phaseCounter(0),
 	animationCounter(0),
-	player(&hitBoxes, &hurtBoxes, new KeyClicks(8))
+	player(&hitBoxes, &hurtBoxes)
 {
 	//setup healthbars
 
 	wipeRect.setFillColor(sf::Color(0,0,0,255));
 	wipeRect.setSize(sf::Vector2f(640,640));
+
+	player.setPosition(sf::Vector2f(320,320));
+	hitBoxes.push_back(player.getBodyReference());
+	hurtBoxes.push_back(player.getWeaponReference());
+
+	ColiderRect temp(nullptr);
+
+	temp.width = 640;
+	temp.height = 32;
+	temp.top = 0;
+	temp.left = 0;
+	hitBoxes.push_back(new ColiderRect(temp));
+
+	temp.top = 608;
+	hitBoxes.push_back(new ColiderRect(temp));
+
+	temp.width = 32;
+	temp.height = 640;
+	temp.top = 0;
+	temp.left = 0;
+	hitBoxes.push_back(new ColiderRect(temp));
+
+	temp.left = 608;
+	hitBoxes.push_back(new ColiderRect(temp));
 }
 
 
@@ -37,14 +61,7 @@ PlayLevel::Result PlayLevel::update(KeyClicks keyInfo) {
 	else if (phaseCounter ==  15) { //game logic
 		wipeRect.setPosition(0, -640);
 
-		//key presses
-		if (keyInfo.getDown(9)) phaseCounter++;
-
-		if (keyInfo.getHit(0)) ;//alphaA.update(Slider::UP);
-		else if (keyInfo.getHit(1)) ;//alphaA.update(Slider::RIGHT);
-		else if (keyInfo.getHit(2)) ;//alphaA.update(Slider::DOWN);
-		else if (keyInfo.getHit(3)) ;//alphaA.update(Slider::LEFT);
-		else ;//alphaA.update(Slider::NONE);
+		player.update(keyInfo);
 
 		if (keyInfo.getHit(6)) phaseCounter = 31;
 		else if (keyInfo.getHit(7)) phaseCounter++;
@@ -93,20 +110,29 @@ PlayLevel::Result PlayLevel::update(KeyClicks keyInfo) {
 
 void PlayLevel::draw(sf::RenderTarget& target,  sf::RenderStates states = sf::RenderStates::Default) const {
 
-	//draw enemies
 	//draw player
+	target.draw(player, states);
+	//draw enemies
 
-//	target.draw(alphaHealth);
-//	target.draw(betaHealth);
-//	//draw bar overlay
-	sf::Vector2f x = wipeRect.getPosition();
-	sf::Transform y = wipeRect.getTransform();
-	sf::Vector2f z = wipeRect.getSize();
-	sf::RectangleShape copy(wipeRect);
-//	copy.setSize(sf::Vector2f(640,640));
-	sf::RectangleShape temp(sf::Vector2f(640,640));
+	sf::RectangleShape printhead;
 
-	target.draw(copy, states);
-//	target.draw(wipeRect, states);
-//	target.draw(temp, states);
+	printhead.setFillColor(sf::Color::Green);
+	for(std::vector<ColiderRect*>::const_iterator i = hitBoxes.begin();
+			i != hitBoxes.end();
+			i++) {
+		printhead.setPosition((**i).left, (**i).top);
+		printhead.setSize(sf::Vector2f((**i).width, (**i).height));
+		target.draw(printhead, states);
+	}
+
+	printhead.setFillColor(sf::Color::Red);
+	for (auto i : hurtBoxes) {
+		printhead.setPosition(i->left, i->top);
+		printhead.setSize(sf::Vector2f(i->width, i->height));
+		target.draw(printhead, states);
+	}
+
+	//draw bar overlay
+
+	target.draw(wipeRect, states);
 }

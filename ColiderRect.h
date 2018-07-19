@@ -3,15 +3,17 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
 
-class ColiderRect : sf::FloatRect {
+class ColiderRect : public sf::FloatRect {
 	Entity* _parent;
 	bool _active;
 	
 public:
 	ColiderRect(Entity*);
 	
-	Entity* getParent() { return _parent; }
-	bool isActive() { return _active; }
+	Entity* getParent() const { return _parent; }
+	bool isActive() const { return _active; }
 	
-	bool colidesWith(const ColiderRect&);
+	bool colidesWith(const ColiderRect&) const;
+
+	ColiderRect* findColision(const std::vector<ColiderRect*>) const;
 };

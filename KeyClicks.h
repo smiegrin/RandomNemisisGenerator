@@ -11,9 +11,9 @@ public:
   KeyClicks(int);
   ~KeyClicks();
 
-  bool getHit(int keyNum);
-  bool getDown(int keyNum);
-  bool getUp(int keyNum);
+	bool getHit(int keyNum) const;
+	bool getDown(int keyNum) const;
+	bool getUp(int keyNum) const;
 
   void hitKey(int keyNum);
   void upKey(int keyNum);

@@ -13,17 +13,17 @@ KeyClicks::~KeyClicks() {
   //delete up;
 }
 
-bool KeyClicks::getHit(int keyNum) {
+bool KeyClicks::getHit(int keyNum) const {
   if (keyNum < 0 || keyNum > keyLength) return false;
   else return hit[keyNum];
 }
 
-bool KeyClicks::getDown(int keyNum) {
+bool KeyClicks::getDown(int keyNum) const {
   if (keyNum < 0 || keyNum > keyLength) return false;
   else return down[keyNum];
 }
 
-bool KeyClicks::getUp(int keyNum) {
+bool KeyClicks::getUp(int keyNum) const {
   if (keyNum < 0 || keyNum > keyLength) return false;
   else return up[keyNum];
 }

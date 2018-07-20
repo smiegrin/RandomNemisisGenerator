@@ -6,8 +6,10 @@
 
 class Player : public Entity {
 	sf::Vector2i _shakeFactor;
+	sf::Vector2f _groundTracker;
 	ColiderRect _body;
 	ColiderRect _weapon;
+	ColiderRect _feet;
 
 public:
 	Player(std::vector<ColiderRect*>*, std::vector<ColiderRect*>*);

@@ -20,6 +20,7 @@ class PlayLevel : public sf::Drawable {
 	std::vector<ColiderRect*> hitBoxes;
 	std::vector<ColiderRect*> hurtBoxes;
 	std::vector<Enemy> enemies;
+	Entity _roomBody;
 	Player player;
 
 	// Timer Display

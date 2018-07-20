@@ -36,6 +36,7 @@ public:
 
 	void displace(const sf::Vector2f& displacement) { _position += displacement; }
 	void accelerate(const sf::Vector2f& acceleration) { _velocity += acceleration; }
+	void friction(const float& factor) { _velocity = sf::Vector2f(_velocity.x*factor, _velocity.y); }
 	void flip() { _facing *= -1; }
 	void hurt(const int& damage) { _health -= damage; }
 

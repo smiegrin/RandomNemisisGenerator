@@ -4,6 +4,7 @@
 PlayLevel::PlayLevel():
 	phaseCounter(0),
 	animationCounter(0),
+	_roomBody(&hitBoxes, &hurtBoxes),
 	player(&hitBoxes, &hurtBoxes)
 {
 	//setup healthbars
@@ -15,7 +16,7 @@ PlayLevel::PlayLevel():
 	hitBoxes.push_back(player.getBodyReference());
 	hurtBoxes.push_back(player.getWeaponReference());
 
-	ColiderRect temp(nullptr);
+	ColiderRect temp(&_roomBody);
 
 	temp.width = 640;
 	temp.height = 32;
@@ -45,6 +46,7 @@ PlayLevel::Result PlayLevel::update(KeyClicks keyInfo) {
 
 	Result endResult = LOSE;
 	if (phaseCounter == 0) {
+		player.setPosition(sf::Vector2f(320,320));
 		//start music
 		wipeRect.setPosition(0, 0);
 		wipeRect.setSize(sf::Vector2f(640,640));
@@ -53,7 +55,7 @@ PlayLevel::Result PlayLevel::update(KeyClicks keyInfo) {
 	}
 
 	else if (phaseCounter > 0 && phaseCounter < 15) {
-		wipeRect.setPosition(0, phaseCounter/15.0*640);
+		wipeRect.setPosition(0, phaseCounter/15.0f*640);
 		endResult = CONTINUING;
 		phaseCounter++;
 	}
@@ -77,7 +79,7 @@ PlayLevel::Result PlayLevel::update(KeyClicks keyInfo) {
 	}
 
 	else if (phaseCounter > 15 && phaseCounter < 30) {
-		wipeRect.setPosition(0, (phaseCounter - 15)/15.0*640 - 640);
+		wipeRect.setPosition(0, (phaseCounter - 15)/15.0f*640 - 640);
 		wipeRect.setFillColor(sf::Color(0,0,0,255));
 		endResult = CONTINUING;
 		phaseCounter++;
@@ -90,7 +92,7 @@ PlayLevel::Result PlayLevel::update(KeyClicks keyInfo) {
 	}
 
 	else if (phaseCounter > 30 && phaseCounter < 45) {
-		float percent = (phaseCounter - 30)/15.0;
+		float percent = (phaseCounter - 30)/15.0f;
 		wipeRect.setPosition(320 - percent*320, 320 - percent*320);
 		wipeRect.setSize(sf::Vector2f(640*percent, 640*percent));
 		endResult = CONTINUING;
@@ -115,8 +117,10 @@ void PlayLevel::draw(sf::RenderTarget& target,  sf::RenderStates states = sf::Re
 	//draw enemies
 
 	sf::RectangleShape printhead;
+	printhead.setFillColor(sf::Color::Transparent);
+	printhead.setOutlineThickness(1);
 
-	printhead.setFillColor(sf::Color::Green);
+	printhead.setOutlineColor(sf::Color::Green);
 	for(std::vector<ColiderRect*>::const_iterator i = hitBoxes.begin();
 			i != hitBoxes.end();
 			i++) {
@@ -125,7 +129,7 @@ void PlayLevel::draw(sf::RenderTarget& target,  sf::RenderStates states = sf::Re
 		target.draw(printhead, states);
 	}
 
-	printhead.setFillColor(sf::Color::Red);
+	printhead.setOutlineColor(sf::Color::Red);
 	for (auto i : hurtBoxes) {
 		printhead.setPosition(i->left, i->top);
 		printhead.setSize(sf::Vector2f(i->width, i->height));

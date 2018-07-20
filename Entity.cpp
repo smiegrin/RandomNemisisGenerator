@@ -1,6 +1,9 @@
 #include "Entity.h"
 
 Entity::Entity(std::vector<ColiderRect *> * hit, std::vector<ColiderRect *> * hurt) :
+		_position(320,320),
+		_velocity(0,0),
+		_ground(nullptr),
 		_hitWorld(hit),
 		_hurtWorld(hurt)
 {}

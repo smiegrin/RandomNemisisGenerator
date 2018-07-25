@@ -76,3 +76,4 @@ CMakeLists.txt.user
 bin/
 hitboxExample/
 compile_commands.json
+TitleComposition.xcf

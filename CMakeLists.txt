@@ -12,6 +12,8 @@ add_executable(RNG
   MainMenu.h
   PlayLevel.cpp
   PlayLevel.h
+  TileGrid.cpp
+  TileGrid.h
   Entity.cpp
   Entity.h
   Player.cpp

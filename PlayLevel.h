@@ -1,6 +1,7 @@
 #pragma once
 
 #include "KeyClicks.h"
+#include "TileGrid.h"
 #include "Player.h"
 #include "Enemy.h"
 #include <SFML/Graphics.hpp>

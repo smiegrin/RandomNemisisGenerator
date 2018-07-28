@@ -57,12 +57,12 @@ void TileGrid::refresh(const int& x, const int& y) {
   printhead.setPosition(_tileSize.x*x, _tileSize.y*y);
   printhead.setTexture(&_tileset);
   sf::IntRect textureRect;
-  textureRect.left = tileValue % rowSize;
-  textureRect.top = tileValue / rowSize;
+	textureRect.left = _tileSize.x * (tileValue % rowSize);
+	textureRect.top = _tileSize.y * (tileValue / rowSize);
   textureRect.width = _tileSize.x;
   textureRect.height = _tileSize.y;
   printhead.setTextureRect(textureRect);
-  _output.draw(printhead);
+	_output.draw(printhead, sf::RenderStates(sf::BlendNone));
   _output.display();
 }
 
@@ -84,7 +84,7 @@ void TileGrid::refreshAll() {
       textureRect.width = _tileSize.x;
       textureRect.height = _tileSize.y;
       printhead.setTextureRect(textureRect);
-      _output.draw(printhead);
+			_output.draw(printhead, sf::RenderStates(sf::BlendNone));
     }
   }
   _output.display();
